@@ -1,6 +1,9 @@
 (ns scramblies.core-test
   (:require [clojure.test :refer :all]
-            [scramblies.core :refer :all]))
+            [scramblies.core :refer :all]
+            [orchestra.spec.test :as st]))
+
+(st/instrument)
 
 (deftest scrambles-test
   (testing "real scrambles are detected"
