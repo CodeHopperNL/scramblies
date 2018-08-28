@@ -10,5 +10,6 @@
                  [ring/ring-defaults "0.3.2"]
                  [org.clojure/tools.logging "0.4.1"]]
   :plugins [[lein-ring "0.12.4"]]
+  :ring {:handler scramblies.app/app}
   :profiles {:dev {:source-paths ["src" "dev"]
                    :dependencies [[ring/ring-jetty-adapter "1.7.0-RC2"]]}})
