@@ -1,0 +1,24 @@
+body::after {
+    content: "";
+    background: url(/img/scrambledeggs.jpg);
+    background-size: cover;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+div#scramblies--root {
+    text-align: center;
+}
+
+div.scramble--result > span {
+    font-size: 20em;
+}
+
+input {
+    font-size: 10em;
+}
