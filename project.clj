@@ -14,15 +14,37 @@
                  [cljs-http "0.1.45"]
                  [org.clojure/core.async "0.4.474"]]
   :plugins [[lein-ring "0.12.4"]
+            [lein-doo "0.1.10"]
+            [lein-cljsbuild "1.1.7"]
             [lein-figwheel "0.5.13"]]
-  :clean-targets [:target-path "out"]
+  :doo {:build "test"
+        :alias {:default [:phantom]}}
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
                         :figwheel true
                         :compiler {:main "scramblies.ui.core"
-                                   :asset-path "build/out"
+                                   :asset-path "build/dev/out"
+                                   :optimizations :whitespace
                                    :output-to "resources/build/scramblies.js"
-                                   :output-dir "resources/build/out"}}]}
+                                   :output-dir "resources/build/dev/out"}}
+                       {:id "prod"
+                        :source-paths ["src"]
+                        :compiler {:main "scramblies.ui.core"
+                                   :asset-path "build/prod/out"
+                                   :optimizations :advanced
+                                   :output-to "resources/build/scramblies.js"
+                                   :output-dir "resources/build/prod/out"}}
+                       {:id "test"
+                        :source-paths ["src" "test" "test-resources"]
+                        :compiler {:main "scramblies.ui.test-runner"
+                                   :asset-path "build/test/out"
+                                   :output-to "test-resources/build/unit-test.js"
+                                   :output-dir "test-resources/build/test/out"
+                                   :optimizations :whitespace
+                                   :pretty-print true}}]}
+  :clean-targets ^{:protect false} ["resources/build"
+                                    "test-resources/build"
+                                    :target-path]
   :ring {:handler scramblies.app/app}
   :profiles {:dev {:source-paths ["src" "dev"]
                    :dependencies [[ring/ring-jetty-adapter "1.7.0-RC2"]]}})

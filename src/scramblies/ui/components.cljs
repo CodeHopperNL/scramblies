@@ -12,15 +12,16 @@
   "Generates a scramblier updater function that fetches the new scramble value from the api"
   [scramblie]
   (fn [e]
-    (let [current-value (.-value (.-currentTarget e))]
-      (swap! state/state assoc scramblie current-value))
-    (go (state/lock!)
-        (try
-          (let [scramble (<! (http/get-scramble! (::haystack @state/state) (::needle @state/state)))]
-            (when (some? scramble)
-              (swap! state/state assoc ::state/scramble scramble)))
-          (finally
-            (state/unlock!))))))
+    (let [input-el (.-currentTarget e)
+          current-value (.-value input-el)]
+      (swap! state/state assoc scramblie current-value)
+      (go (state/lock!)
+          (try
+            (let [scramble (<! (http/get-scramble! (::haystack @state/state) (::needle @state/state)))]
+              (when (some? scramble)
+                (swap! state/state assoc ::state/scramble scramble)))
+            (finally
+              (state/unlock!)))))))
 
 ;;
 ;; React components
@@ -28,10 +29,12 @@
 
 (defn input-text [role]
   (let [value (get @state/state role)]
-    [:input {:type "text"
+    [:input {:id role
+             :type "text"
              :minLength 50
              :maxLength 50
              :value value
+             :disabled (state/locked? @state/state)
              :onChange (scramblie-updater role)}]))
 
 (defn happy-face []
