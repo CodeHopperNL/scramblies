@@ -72,5 +72,5 @@
   :fn   #(let [freq1 (frequencies (-> % :args :str1))
                freq2 (frequencies (-> % :args :str2))
                ;; a more idiomatic but less performant version of scramble?:
-               s?    (every? (fn [[k v]] (<= v (get freq1 k))) freq2)]
+               s?    (every? (fn [[k v]] (<= v (get freq1 k -1))) freq2)]
            (= s? (-> % :ret))))
